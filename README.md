@@ -1,5 +1,5 @@
-sahil-portfolio is a personal portfolio website designed to showcase my work, skills, and creative journey as a developer. It serves as a digital hub where visitors can explore my projects, learn about my technical expertise, and get a glimpse of my professional growth.
+sahil-portfolio is a modern, dynamic portfolio crafted to showcase my journey as a developer and creator. It blends clean design, smooth animations, and responsive layouts to deliver an engaging user experience across all devices.
 
-The portfolio features a modern, responsive design focused on simplicity and user experience. It highlights key projects with detailed descriptions, tech stacks, and live previews or GitHub links. Beyond just code, it reflects my personality — combining clean aesthetics with a touch of creativity.
+The site highlights my projects, skills, and creative process — with each section designed to reflect my passion for technology and innovation. From interactive UI elements to detailed project breakdowns, everything is built to stand out and feel fresh.
 
-Built using modern web technologies, this site acts as both a professional resume and a personal brand statement. Whether you’re a recruiter, collaborator, or fellow developer, sahil-portfolio offers an authentic look into my passion for technology, design, and continuous learning.
+Built using modern web technologies, sahil-portfolio isn’t just a collection of work — it’s a statement of style, growth, and creativity in motion.
