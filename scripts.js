@@ -2,30 +2,39 @@
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        stopAutoScroll(); // Stop auto-scroll when user clicks nav
+        stopAutoScroll();
         document.querySelector(this.getAttribute('href')).scrollIntoView({
             behavior: 'smooth'
         });
     });
 });
 
-// Music player functionality with hardcoded music
+// Music player functionality
 const musicUrl = './assets/In-Dreamland.mp3';
-
 const playPause = document.getElementById('playPause');
+const playPauseMobile = document.getElementById('playPauseMobile');
 let audio = new Audio(musicUrl);
 audio.loop = false;
 audio.volume = 0.1;
-audio.addEventListener('ended', function() {
-    isPlaying = false;
-    playPause.innerHTML = '<i class="fa-solid fa-play"></i>';
-    stopAutoScroll();
-    autoScrollCompleted = false;  // Reset to allow replay
-});
+
 let isPlaying = false;
 let autoScrollInterval = null;
 let isAutoScrolling = false;
 let autoScrollCompleted = false;
+
+audio.addEventListener('ended', function() {
+    isPlaying = false;
+    updatePlayButtons(false);
+    stopAutoScroll();
+    autoScrollCompleted = false;
+});
+
+// Update both play buttons
+function updatePlayButtons(playing) {
+    const icon = playing ? '<i class="fa-solid fa-circle-pause"></i>' : '<i class="fa-solid fa-play"></i>';
+    if (playPause) playPause.innerHTML = icon;
+    if (playPauseMobile) playPauseMobile.innerHTML = icon;
+}
 
 // Auto-scroll function
 function startAutoScroll() {
@@ -38,11 +47,10 @@ function startAutoScroll() {
             behavior: 'smooth'
         });
 
-        // Stop at bottom of page
         if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
             stopAutoScroll();
         }
-    }, 30); // Adjust speed: lower = faster, higher = slower
+    }, 30);
 }
 
 function stopAutoScroll() {
@@ -55,76 +63,104 @@ function stopAutoScroll() {
 }
 
 // Stop auto-scroll on user interaction
-const stopScrollEvents = ['click', 'wheel', 'touchstart', 'keydown'];
-stopScrollEvents.forEach(event => {
+['click', 'wheel', 'touchstart', 'keydown'].forEach(event => {
     document.addEventListener(event, function (e) {
-        // Don't stop if clicking the play/pause button or theme toggle
-        if (!e.target.closest('#playPause') && !e.target.closest('#themeToggle')) {
+        if (!e.target.closest('#playPause') && 
+            !e.target.closest('#playPauseMobile') &&
+            !e.target.closest('#themeToggle') && 
+            !e.target.closest('#themeToggleMobile') &&
+            !e.target.closest('.music-control') &&
+            !e.target.closest('.theme-control')) {
             stopAutoScroll();
         }
     });
 });
 
-// Play/Pause button functionality
-playPause.addEventListener('click', function (e) {
-    e.stopPropagation();
-
+// Toggle music function
+function toggleMusic() {
     if (isPlaying) {
         audio.pause();
-        playPause.innerHTML = '<i class="fa-solid fa-play"></i>';
+        updatePlayButtons(false);
         stopAutoScroll();
     } else {
         audio.play();
-        playPause.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
-        autoScrollCompleted = false;  // Reset to allow auto-scroll on replay
+        updatePlayButtons(true);
+        autoScrollCompleted = false;
         startAutoScroll();
-
-        // Trigger zoom animation on all sections
         triggerZoomAnimation();
     }
     isPlaying = !isPlaying;
-});
+}
 
-// Zoom animation for sections when music starts
+// Play/Pause buttons
+if (playPause) {
+    playPause.addEventListener('click', function (e) {
+        e.stopPropagation();
+        toggleMusic();
+    });
+}
+
+if (playPauseMobile) {
+    playPauseMobile.addEventListener('click', function (e) {
+        e.stopPropagation();
+        toggleMusic();
+    });
+}
+
+// Zoom animation
 function triggerZoomAnimation() {
     const containers = document.querySelectorAll('.container');
-
     containers.forEach((container, index) => {
-        // Add animation with staggered delay
         setTimeout(() => {
             container.classList.add('zoom-animate');
-
-            // Remove class after animation completes so it can be triggered again
             setTimeout(() => {
                 container.classList.remove('zoom-animate');
             }, 800);
-        }, index * 150); // 150ms delay between each section
+        }, index * 150);
     });
 }
 
 // Dark Mode Toggle
 const themeToggle = document.getElementById('themeToggle');
+const themeToggleMobile = document.getElementById('themeToggleMobile');
 const body = document.body;
 
-// Check for saved theme preference - defaults to dark mode
-const currentTheme = localStorage.getItem('theme') || 'dark';
-if (currentTheme === 'dark') {
-    body.classList.add('dark-mode');
-    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+// Track theme in memory instead of localStorage
+let isDarkMode = true; // Default to dark mode
+
+// Update both theme buttons
+function updateThemeButtons(isDark) {
+    const icon = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    if (themeToggle) themeToggle.innerHTML = icon;
+    if (themeToggleMobile) themeToggleMobile.innerHTML = icon;
 }
 
-themeToggle.addEventListener('click', function (e) {
-    e.stopPropagation();
-    body.classList.toggle('dark-mode');
+// Initialize with dark mode
+body.classList.add('dark-mode');
+updateThemeButtons(true);
 
-    if (body.classList.contains('dark-mode')) {
-        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        localStorage.setItem('theme', 'dark');
-    } else {
-        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-        localStorage.setItem('theme', 'light');
-    }
-});
+// Toggle theme function
+function toggleTheme() {
+    body.classList.toggle('dark-mode');
+    isDarkMode = body.classList.contains('dark-mode');
+    updateThemeButtons(isDarkMode);
+}
+
+// Desktop theme toggle
+if (themeToggle) {
+    themeToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        toggleTheme();
+    });
+}
+
+// Mobile theme toggle
+if (themeToggleMobile) {
+    themeToggleMobile.addEventListener('click', function (e) {
+        e.stopPropagation();
+        toggleTheme();
+    });
+}
 
 // Active nav link
 window.addEventListener('scroll', () => {
