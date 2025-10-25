@@ -22,7 +22,7 @@ let autoScrollInterval = null;
 let isAutoScrolling = false;
 let autoScrollCompleted = false;
 
-audio.addEventListener('ended', function() {
+audio.addEventListener('ended', function () {
     isPlaying = false;
     updatePlayButtons(false);
     stopAutoScroll();
@@ -43,7 +43,7 @@ function startAutoScroll() {
 
     autoScrollInterval = setInterval(() => {
         window.scrollBy({
-            top: 1.5,
+            top: 15,
             behavior: 'smooth'
         });
 
@@ -65,9 +65,9 @@ function stopAutoScroll() {
 // Stop auto-scroll on user interaction
 ['click', 'wheel', 'touchstart', 'keydown'].forEach(event => {
     document.addEventListener(event, function (e) {
-        if (!e.target.closest('#playPause') && 
+        if (!e.target.closest('#playPause') &&
             !e.target.closest('#playPauseMobile') &&
-            !e.target.closest('#themeToggle') && 
+            !e.target.closest('#themeToggle') &&
             !e.target.closest('#themeToggleMobile') &&
             !e.target.closest('.music-control') &&
             !e.target.closest('.theme-control')) {
