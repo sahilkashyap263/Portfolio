@@ -10,12 +10,12 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Music player functionality
-const musicUrl = './assets/bg-music-3.mp3';
+const musicUrl = './assets/BG-Music-1.mp3';
 const playPause = document.getElementById('playPause');
 const playPauseMobile = document.getElementById('playPauseMobile');
 let audio = new Audio(musicUrl);
 audio.loop = false;
-audio.volume = 0.1;
+audio.volume = 0.2;
 
 let isPlaying = false;
 let autoScrollInterval = null;
@@ -43,7 +43,7 @@ function startAutoScroll() {
 
     autoScrollInterval = setInterval(() => {
         window.scrollBy({
-            top: 12,
+            top: 5,
             behavior: 'smooth'
         });
 
@@ -178,5 +178,28 @@ window.addEventListener('scroll', () => {
         if (a.getAttribute('href').includes(current)) {
             a.style.color = isDark ? '#64b5f6' : '#0078d7';
         }
+    });
+});
+
+// Certification Toggle Functionality
+document.querySelectorAll('.cert-toggle').forEach(button => {
+    button.addEventListener('click', function (e) {
+        e.stopPropagation();
+
+        const certItem = this.closest('.cert-item');
+        const details = certItem.querySelector('.cert-details');
+        const icon = this.querySelector('i');
+
+        // Close all other open certifications
+        document.querySelectorAll('.cert-item').forEach(item => {
+            if (item !== certItem) {
+                item.querySelector('.cert-details').classList.remove('active');
+                item.querySelector('.cert-toggle').classList.remove('active');
+            }
+        });
+
+        // Toggle current certification
+        details.classList.toggle('active');
+        this.classList.toggle('active');
     });
 });
