@@ -10,7 +10,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Music player functionality
-const musicUrl = './assets/In-Dreamland.mp3';
+const musicUrl = './assets/bg-music-3.mp3';
 const playPause = document.getElementById('playPause');
 const playPauseMobile = document.getElementById('playPauseMobile');
 let audio = new Audio(musicUrl);
@@ -43,7 +43,7 @@ function startAutoScroll() {
 
     autoScrollInterval = setInterval(() => {
         window.scrollBy({
-            top: 15,
+            top: 12,
             behavior: 'smooth'
         });
 
