@@ -43,7 +43,7 @@ function startAutoScroll() {
 
     autoScrollInterval = setInterval(() => {
         window.scrollBy({
-            top: 5,
+            top: 3,
             behavior: 'smooth'
         });
 
@@ -182,13 +182,17 @@ window.addEventListener('scroll', () => {
 });
 
 // Certification Toggle Functionality
-document.querySelectorAll('.cert-toggle').forEach(button => {
-    button.addEventListener('click', function (e) {
+document.querySelectorAll('.cert-item').forEach(certItem => {
+    certItem.addEventListener('click', function (e) {
+        // Don't toggle if clicking on a link
+        if (e.target.closest('.cert-link')) {
+            return;
+        }
+
         e.stopPropagation();
 
-        const certItem = this.closest('.cert-item');
-        const details = certItem.querySelector('.cert-details');
-        const icon = this.querySelector('i');
+        const details = this.querySelector('.cert-details');
+        const toggleButton = this.querySelector('.cert-toggle');
 
         // Close all other open certifications
         document.querySelectorAll('.cert-item').forEach(item => {
@@ -200,6 +204,27 @@ document.querySelectorAll('.cert-toggle').forEach(button => {
 
         // Toggle current certification
         details.classList.toggle('active');
-        this.classList.toggle('active');
+        toggleButton.classList.toggle('active');
+    });
+});
+
+// Contact Card Click Functionality
+document.querySelectorAll('.contact-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+        // Don't trigger if clicking directly on the link
+        if (e.target.tagName === 'A') {
+            return;
+        }
+        
+        const link = this.getAttribute('data-link');
+        const target = this.getAttribute('data-target');
+        
+        if (link) {
+            if (target === '_blank') {
+                window.open(link, '_blank');
+            } else {
+                window.location.href = link;
+            }
+        }
     });
 });
