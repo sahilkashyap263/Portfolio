@@ -470,6 +470,7 @@ h2 {
     border-radius: 10px;
     margin: var(--spacing-sm) 0;
     border: 2px dashed var(--win7-blue);
+    text-align: justify;
 }
 
 /* Skills Section - Responsive Grid */
